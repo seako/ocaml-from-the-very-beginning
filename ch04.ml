@@ -142,3 +142,56 @@ let palindrome_of_list l =
 
 let is_palindrome l =
   l = our_rev_better l
+
+(* 4. Write a function drop_last which returns all but the last element of
+      a list. If the list is empty, itshould return the empty list.
+      What about a tail recursive version? *)
+
+let rec drop_last l =
+  match l with
+  | [] -> []
+  | [_] -> []
+  | h :: tl -> h :: drop_last tl
+
+let drop_last_tail_rec l =
+  let rec drop_last_aux input output =
+    match input with
+    | [] -> output
+    | [_] -> output
+    | h :: tl -> drop_last_aux tl (h :: output)
+  in
+  our_rev_better (drop_last_aux l [])
+
+(* 5. Write a function member of type 'a -> 'a list -> bool which returns true
+      if an element exists in a list, or false if not. *)
+
+let rec member e l =
+  match l with
+  | [] -> false
+  | h :: tl -> if e = h then true else member e tl
+
+(* 6. Use the member function to write make_set. Make set takes a list and returns
+      a list with no duplicate elements. *)
+
+(* make_set : 'a list -> 'a list *)
+let make_set l =
+  let rec make_set_aux input output =
+    match input with
+    | [] -> output
+    | h :: tl ->
+      if member h output
+      then make_set_aux tl output
+      else make_set_aux tl (h :: output)
+  in
+  make_set_aux l []
+
+(* 7. Can you explain why the rev (our_rev_bad) function we defined is inefficient?
+      How does the time it takes to run relate to the size of its argument? Can you
+      write a more efficient verion using an accumulating argument? What is its
+      efficiency in terms of time taken and space used?
+
+For a list of length n, our_rev_bad builds up n calls to @. Each of the invocations
+Of @ will operate on a list of length 1, 2, 3, ..., n -1. So our_rev_bad is takes
+time proportionate to the factorial of the length of its input.
+
+our_rev_better uses an accumulator and takes time proportional to the length of its input *)
