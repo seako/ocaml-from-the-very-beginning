@@ -126,11 +126,43 @@ let rec apply f n acc =
 
 (* 5. Modify the insertion sort function from the previous chapter to take a comparison function. What is its type? *)
 
+(* insertion_sort : ('a -> 'a -> bool) -> 'a list -> 'a list *)
+let rec insertion_sort cmp l =
+  (* insert : ('a -> 'a -> bool ) -> 'a -> 'a list -> 'a list *)
+  let rec insert cmp x l =
+  match l with
+  | [] -> [x]
+  | h :: tl ->
+    if cmp x h
+    then
+      x :: h :: tl
+    else
+      h :: insert cmp x tl
+  in
+  match l with
+  | [] -> []
+  | h :: tl -> insert cmp h (insertion_sort cmp tl)
+
 (* 6. Write a function 'filter' which takes a function from 'a -> bool and an 'a list and returns a list of just those
       elements for which the function returns true. *)
 
+(* filter : ('a -> bool) -> 'a list -> 'a list *)
+let rec filter pred l =
+  match l with
+  | [] -> []
+  | h :: tl -> if pred h then h :: filter pred tl else filter pred tl
+
 (* 7. Write the function 'for_all' which, given a function of type 'a -> bool and an argument list of type 'a list
-      that evaluates to true only if the function returns tru for every element of the list. *)
+      that evaluates to true only if the function returns true for every element of the list. *)
+
+(* for_all : ('a -> bool) -> 'a list -> bool *)
+let rec for_all pred l =
+  match l with
+  | [] -> true
+  | h :: tl -> (pred h) && (for_all pred tl)
 
 (* 8. Write a function mapl which maps a function of type 'a -> 'b over a list of type 'a list list to produce a list
       of type 'b list list *)
+
+(* mapl : ('a -> 'b) -> 'a list list -> 'b list list *)
+let mapl f ll = map (map f) ll
