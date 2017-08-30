@@ -95,7 +95,7 @@ let rec merge_sort l =
    this isn't true if the length of the list is greater than `max_int` *)
 
 (* 4. Write a version of insertion_sort that sorts the arguments in reverse order. *)
-(* insertion_sort : 'a list -> 'a list *)
+(* insertion_sort_rev : 'a list -> 'a list *)
 let rec insertion_sort_rev l =
   (* insert : 'a -> 'a list -> 'a list *)
   let rec insert x l =
