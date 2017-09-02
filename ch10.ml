@@ -174,7 +174,7 @@ let rec map_s f s =
 
 (* 6. extend the expr type and evaluate function to allow raising a number to a power *)
 type expr' =
-  | Num of Num.num
+  | Num of Num.num (* NOTE: Num is not part of OCaml 4.05 *)
   | Add of expr' * expr'
   | Subtract of expr' * expr'
   | Multiply of expr' * expr'
@@ -195,6 +195,6 @@ let rec evaluate' (e : expr') =
 
 let safe_evaluate e =
   try
-    Some (evaluate' e)
-  with Division_by_zero ->
-    None
+    Ok (evaluate' e)
+  with
+  | err -> Error err
